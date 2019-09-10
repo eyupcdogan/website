@@ -1,0 +1,59 @@
+{% extends "layout2.html" %}
+
+{% block body %}
+<hr>
+<a class = "btn btn-danger" href = "{% url 'article:addarticle' %}">Girdi ekle</a>
+<hr>
+<!-- DOM dataTable -->
+<div class="col-md-12">
+    <div class="widget">
+        <header class="widget-header">
+            <h4 class="widget-title">Default DataTable</h4>
+        </header><!-- .widget-header -->
+        <hr class="widget-separator">
+        <div class="widget-body">
+            <div class="table-responsive">
+                {% if articles %}
+                
+                <table id="default-datatable" data-plugin="DataTable" class="table table-striped" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col">Başlık</th>
+                            <th scope="col">Yazar</th>
+                            <th scope="col">Tarih</th>
+                            <th scope="col">Güncelle</th>
+                            <th scope="col">Sil</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        
+                    </tfoot>
+                    <tbody>
+                        {% for article in articles %}
+                        <tr>       
+                            <th scope="row">{{article.id}}</th>
+                            <td><a href="{% url 'article:detail' article.id %}">{{article.title}}</a></td>
+                            <td>{{article.author.username}}</td>
+                            <td>{{article.created_date}}</td>
+                            {%if article.author.username in request.user.username %}
+                            <td><a href="{% url 'article:update' article.id %}"class = "btn btn-danger">Güncelle</a></td>
+                            <td><a href="{% url 'article:delete' article.id %}" class = "btn btn-danger">Sil</a></td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+            <div class = "alert alert-danger">
+                    Henüz Bir girdiniz bulunmuyor..
+                
+            </div>
+            {% endif %}
+            </div>
+        </div><!-- .widget-body -->
+    </div><!-- .widget -->
+</div><!-- END column -->
+
+
+{% endblock body %}
